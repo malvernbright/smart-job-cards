@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\JobCardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,9 +12,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [JobCardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'role:admin'])
     ->name('admin.')->prefix('admin')->group(function () {
@@ -28,6 +28,21 @@ Route::middleware(['auth', 'verified', 'role:admin'])
             ->name('permission.roles');
         Route::delete('/permissions/{permission}/roles/{role}', [PermissionController::class, 'removeRole'])
             ->name('permission.roles.remove');
+        Route::get('/users', [UserController::class, 'index'])
+            ->name('users.index');
+        Route::get('/users/{user}', [UserController::class, 'show'])
+            ->name('users.show');
+        Route::delete('/users/{user}/delete', [UserController::class, 'destroy'])
+            ->name('user.destroy');
+        Route::post('/users/{user}/roles', [UserController::class, 'assignRole'])
+            ->name('users.roles');
+        Route::delete('/users/{user}/roles/{role}', [UserController::class, 'removeRole'])
+            ->name('users.roles.remove');
+
+        Route::post('/users/{user}/permissions', [UserController::class, 'givePermission'])
+            ->name('users.permissions');
+        Route::delete('/users/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])
+            ->name('users.permissions.revoke');
     });
 
 Route::middleware('auth')->group(function () {
