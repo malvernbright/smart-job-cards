@@ -10,7 +10,8 @@
             </div>
             <div class="flex flex-col p-2 bg-slate-100">
                 <div class="space-y-8 divide-y divide-gray-200 w-1/2 mt-10">
-                    <form action="{{ route('admin.roles.update', $role) }}" method="post">
+                    <h2>Assign permissions to {{ $role->name }} role</h2>
+                    {{-- <form action="{{ route('admin.roles.update', $role) }}" method="post">
                         @csrf
                         @method('PUT')
                         <div class="sm:col-span-6">
@@ -29,22 +30,26 @@
                                 Save
                             </button>
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
             <div class="mt-6 p-2 bg-slate-100">
-                <h2 class="text-2xl font-semibold">Role Permissions</h2>
+                <h2 class="text-2xl font-semibold">Role Permissions for "{{ $role->name }}"</h2>
                 <div class="flex space-x-2 mt-4 p-2">
                     @if ($role->permissions)
-                        @foreach ($role->permissions as $role_permission)
-                            <form class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
-                                action="{{ route('admin.roles.permissions.revoke', [$role->id, $role_permission->id]) }}"
-                                method="post" onsubmit="return confirm('Are you sure?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">{{ $role_permission->name }}</button>
-                            </form>
-                        @endforeach
+                        <div class="grid grid-cols-4 gap-x-4 text-center">
+                            @foreach ($role->permissions as $role_permission)
+                                <div class="p-6">
+                                    <form class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md"
+                                        action="{{ route('admin.roles.permissions.revoke', [$role->id, $role_permission->id]) }}"
+                                        method="post" onsubmit="return confirm('Are you sure?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit">{{ $role_permission->name }}</button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
                 <div class="max-w-xl mt-6">

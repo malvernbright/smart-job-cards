@@ -1,14 +1,21 @@
 <?php
 
-namespace App\Models\JobCard;
+namespace App\Models;
 
+use App\JobCard\Comments;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobCard extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title', 'description', 'requirements', 'status', 'creator'
+    ];
 
     public function assignments(): HasMany
     {
@@ -22,5 +29,10 @@ class JobCard extends Model
     public function attachments(): HasMany
     {
         return $this->hasMany(Attachments::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator');
     }
 }

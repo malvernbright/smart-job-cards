@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models\JobCard;
+namespace App\JobCard;
 
+use App\Models\JobCard;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Attachments extends Model
+class Comments extends Model
 {
     use HasFactory;
 

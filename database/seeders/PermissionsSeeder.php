@@ -24,21 +24,39 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'delete job-cards']);
         Permission::create(['name' => 'read job-cards']);
         Permission::create(['name' => 'create job-cards']);
+        Permission::create(['name' => 'assign job-card']);
         Permission::create(['name' => 'create user']);
+        Permission::create(['name' => 'read user']);
+        Permission::create(['name' => 'update user']);
+        Permission::create(['name' => 'delete user']);
+        Permission::create(['name' => 'create subordinate']);
+        Permission::create(['name' => 'read subordinate']);
+        Permission::create(['name' => 'update subordinate']);
+        Permission::create(['name' => 'delete subordinate']);
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'employee']);
         $role1->givePermissionTo('read job-cards');
         $role1->givePermissionTo('create job-cards');
 
+
         $role2 = Role::create(['name' => 'manager']);
         $role2->givePermissionTo('create job-cards');
         $role2->givePermissionTo('read job-cards');
         $role2->givePermissionTo('edit job-cards');
         $role2->givePermissionTo('delete job-cards');
+        $role2->givePermissionTo('assign job-card');
+        $role2->givePermissionTo('create subordinate');
+        $role2->givePermissionTo('read subordinate');
+        $role2->givePermissionTo('update subordinate');
+        $role2->givePermissionTo('delete subordinate');
 
         $role3 = Role::create(['name' => 'admin']);
         $role3->givePermissionTo('create user');
+        $role3->givePermissionTo('read user');
+        $role3->givePermissionTo('update user');
+        $role3->givePermissionTo('delete user');
+        $role3->givePermissionTo('read job-cards');
 
         $role4 = Role::create(['name' => 'Super-Admin']);
         // gets all permissions via Gate::before rule; see AuthServiceProvider
@@ -67,6 +85,5 @@ class PermissionsSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
         $superAdmin->assignRole($role3, $role4);
-    
     }
 }

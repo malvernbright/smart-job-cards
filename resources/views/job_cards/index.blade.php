@@ -4,45 +4,103 @@
             Job Cards
         </h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                @if ($job_cards)
-                    @foreach ($job_cards as $job_card)
-                        <div class="row columns-4">
-                            <div class="col">
-                                <div class="card text-pretty">
-                                    <div class="card-header">
-                                        <h1 class="text text-violet-900 font-bold">{{ $job_card->title }}</h1>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="card-text">
-                                            {{$job_card->description}}
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        Requirements: {{$job_card->requirements}}
-                                    </div>
+    @if (auth()->user()->hasRole('admin'))
+        @if ($jobCards)
+            <div class="flex flex-wrap justify-normal mt-10">
+                @foreach ($jobCards as $jobCard)
+                    <div class="p-4 max-w-sm">
+                        <div class="flex rounded-lg h-full dark:bg-gray-800 bg-teal-400 p-8 flex-col">
+                            <div class="flex items-center mb-3">
+                                <div
+                                    class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full dark:bg-indigo-500 bg-indigo-500 text-white flex-shrink-0">
+                                    <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                    </svg>
                                 </div>
+                                <h2 class="text-white dark:text-white text-lg font-medium">
+                                    {{ $jobCard->title }}</h2>
+                            </div>
+                            <div class="flex flex-col justify-between flex-grow">
+                                <p class="leading-relaxed text-base text-white dark:text-gray-300">
+                                    {{ substr($jobCard->description, 0, 40) }}
+                                </p>
+                                <a href="#"
+                                    class="mt-3 text-black dark:text-white hover:text-blue-600 inline-flex items-center">Assign
+                                    User
+                                    <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2"
+                                        viewBox="0 0 24 24">
+                                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
-                    @endforeach
-                @else
-                @endif
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="flex flex-wrap justify-center mt-10">
+                <h3>You don't have job cards yet. Create one</h3>
+            </div>
+        @endif
+    @else
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    @if ($assignments)
+                        <div class="flex flex-wrap justify-normal mt-10">
+                            @foreach ($assignments as $assignment)
+                                <div class="p-4 max-w-sm">
+                                    <div class="flex rounded-lg h-full dark:bg-gray-800 bg-teal-400 p-8 flex-col">
+                                        <div class="flex items-center mb-3">
+                                            <div
+                                                class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full dark:bg-indigo-500 bg-indigo-500 text-white flex-shrink-0">
+                                                <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
+                                                    viewBox="0 0 24 24">
+                                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                                </svg>
+                                            </div>
+                                            <h2 class="text-white dark:text-white text-lg font-medium">
+                                                {{ $assignment->job_card_id }}</h2>
+                                        </div>
+                                        <div class="flex flex-col justify-between flex-grow">
+                                            <p class="leading-relaxed text-base text-white dark:text-gray-300">
+                                                {{ $assignment->assigned_at }}
+                                            </p>
+                                            @if ($assignment->completed_at)
+                                                <p class="leading-relaxed text-xs text-white dark:text-gray-100">
+                                                    This assignment was completed at {{ $assignment->completed_at }}
+                                                </p>
+                                            @else
+                                                <p class="leading-relaxed text-xs text-white dark:text-gray-100">
+                                                    This assignment is not completed
+                                                </p>
+                                            @endif
+
+                                            <a href="#"
+                                                class="mt-3 text-black dark:text-white hover:text-blue-600 inline-flex items-center">Learn
+                                                More
+                                                <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2"
+                                                    viewBox="0 0 24 24">
+                                                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="flex flex-wrap justify-center mt-10">
+                            <h3>You don't have job cards yet. Create one</h3>
+                        </div>
+                    @endif
                 </div>
-                @can('read job-cards')
-                    You can READ Job Cards.
-                @endcan
-                @can('create job-cards')
-                    You can Create Job Cards
-                @endcan
-                @can('create user')
-                    Congratulations, you are a super-admin!
-                @endcan
             </div>
         </div>
-    </div>
+    @endif
+
 </x-app-layout>
