@@ -52,7 +52,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])
 
         Route::get('/job-cards/create', [AdminJobCardsController::class, 'create'])
             ->name('job_cards.create');
-        Route::post('/jobcards/create', [AdminJobCardsController::class, 'store'])->name('job_card.store');
+        Route::post('/jobcards/create', [AdminJobCardsController::class, 'store'])
+        ->name('job_card.store');
+        Route::get('/job-cards/{jobCard}/show', [AdminJobCardsController::class, 'show'])
+        ->name('job_card.show');
     });
 
 Route::middleware('auth')->group(function () {

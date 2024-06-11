@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\JobCard;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class JobCardController extends Controller
@@ -28,7 +30,23 @@ class JobCardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $request->validate([
+            "title" => "required",
+            "description" => "required",
+            "requirements" => "required",
+            "status" => "required"
+        ]);
+        
+          $jobCard = new JobCard();
+          $jobCard->title = $request->get('title');
+          $jobCard->description = $request->get('description');
+          $jobCard->requirements = $request->get('requirements');
+          $jobCard->creator = auth()->user()->id;
+          $jobCard->status = $request->get('status');
+          $jobCard->save();
+          
+          return to_route('admin.index')->with('message', 'Job Card created successfully');
     }
 
     /**
@@ -36,7 +54,8 @@ class JobCardController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $jobCard = JobCard::findOrFail($id);
+        return view("admin.job_cards.show", compact("jobCard"));
     }
 
     /**

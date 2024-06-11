@@ -2,7 +2,7 @@
     class="flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64 dark:text-gray-200 dark:bg-gray-800"
     x-data="{ open: false }">
     <div class="flex flex-row items-center justify-between flex-shrink-0 px-8 py-4">
-        <a href="#"
+        <a href="{{ route('admin.index') }}"
             class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline">
             Smart Job Cards Admin
         </a>
@@ -42,7 +42,7 @@
                 class="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg">
                 <div class="px-2 py-2 bg-white rounded-md shadow dark:bg-gray-700">
                     <x-admin-link :href="route('dashboard.job_cards.index')" :active="request()->routeIs('dashboard.job_cards.index')">{{ __('Dashboard') }}</x-admin-link>
-                    
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 
